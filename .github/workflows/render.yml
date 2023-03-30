@@ -44,4 +44,4 @@ jobs:
         uses: quarto-dev/quarto-actions/render@v2
         with:
           to: ipynb
-          path: source-folder
+          path: hw01.qmd
