@@ -45,3 +45,10 @@ jobs:
         with:
           to: ipynb
           path: hw01.qmd
+
+      - name: Commit and Push
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          file_pattern: '*.ipynb'
+          commit_message: "Build notebook from ${{ github.sha }}"
+  
