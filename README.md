@@ -1,6 +1,6 @@
 # Homework 1: Debugging and Fixing Julia Code
 
-![MIT License](https://img.shields.io/github/license/BEE4850/lab01?style=for-the-badge)
+![MIT License](https://img.shields.io/github/license/BEE4850/hw01?style=for-the-badge)
 
 This is the repository for Homework 1 for [BEE 4850](https://viveks.me/simulation-data-analysis), taught at [Cornell University](https://cornell.edu) in Spring 2024 by [Vivek Srikrishnan](https://viveks.me).
 
