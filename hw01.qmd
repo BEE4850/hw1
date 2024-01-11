@@ -61,6 +61,8 @@ The goal of this homework assignment is to introduce you to simulation-based dat
 The following code loads the environment and makes sure all needed packages are installed. This should be at the start of most Julia scripts.
 
 ```{julia}
+#| output: false
+
 import Pkg
 Pkg.activate(@__DIR__)
 Pkg.instantiate()
@@ -69,6 +71,8 @@ Pkg.instantiate()
 The following packages are included in the environment (to help you find other similar packages in other languages). The code below loads these packages for use in the subsequent notebook (the desired functionality for each package is commented next to the package).
 
 ```{julia}
+#| output: false
+
 using Random # random number generation and seed-setting
 using DataFrames # tabular data structure
 using CSVFiles # reads/writes .csv files
