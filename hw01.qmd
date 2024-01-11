@@ -1,5 +1,5 @@
 ---
-title: "Homework 1: Debugging Julia Code"
+title: "Homework 1: Simulation-Based Data Analysis"
 format:
     html:        
         warning: true
@@ -7,11 +7,25 @@ format:
     pdf:
         warning: true
         error: true
+        keep-tex: true
+        include-in-header: 
+            text: |
+                \usepackage{fvextra}
+                \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
     ipynb:
         warning: true
         error: true
+include-before-body:
+    text: |
+        \RecustomVerbatimEnvironment{verbatim}{Verbatim}{
+        showspaces = false,
+        showtabs = false,
+        breaksymbolleft={},
+        breaklines
+        % Note: setting commandchars=\\\{\} here will cause an error 
+        }
 jupyter: julia-1.9
-format-links: [pdf]
+format-links: [pdf, ipynb]
 freeze: false
 ---
 
@@ -24,27 +38,23 @@ freeze: false
 ::: {.callout-important icon=false}
 ### Due Date
 
-Friday, 2/9/24, 9:00pm
+Monday, 2/5/24, 9:00pm
 :::
 
-::: {.content-visible when-format="html"}
+:::{.callout-tip}
 
-:::{.callout-caution}
-
-If you are enrolled in the course, make sure that you use the GitHub Classroom link provided in Ed Discussion, or you may not be able to get help if you run into problems.
-
-Otherwise, you can [find the Github repository here]({{< var github_org.repo >}}/hw01).
-
+To do this assignment in Julia, you can find a Jupyter notebook with an appropriate environment in [the homework's Github repository]({{< var github_org.repo >}}/hw01). Otherwise, you will be responsible for setting up an appropriate package environment in the language of your choosing. Make sure to include your name and NetID on your solution.
 :::
 
-:::
 
 ## Overview
 
 ### Instructions
 
-- Problems 1-4 consist of a series of code snippets for you to interpret and debug. For Problems 1-3, you will be asked to identify relevant error(s) and fix the code. For Problem 4, the code works as intended; your goal is to identify the code's purpose by following its logic.
-- Problem 5 asks you to rewrite a "script" into a function, which you will then use to conduct an experiment.
+The goal of this homework assignment is to introduce you to simulation-based data analysis. 
+
+* Problem 1 asks you to explore whether a difference between data collected from two groups might be statistically meaningful or the result of noise. This problem repeats the analysis from [Statistics Without The Agonizing Pain](https://www.youtube.com/watch?v=5Dnw46eC-0o) by John Rauser (which is a neat watch!).
+* Problem 2 asks you to evaluate an interview method for finding the level of cheating on a test to determine whether cheating was relatively high or low. This problem was adapted from [Bayesian Methods for Hackers](https://dataorigami.net/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers/).
 
 ### Load Environment
 
@@ -56,122 +66,86 @@ Pkg.activate(@__DIR__)
 Pkg.instantiate()
 ```
 
-## Problems (Total: 100 Points)
-
-### Problem 1 (20 points)
-
-You've been tasked with writing code to identify the minimum value in an array. You cannot use a predefined function. Your colleague suggested the function below, but it does not return the minimum value.
+The following packages are included in the environment (to help you find other similar packages in other languages). The code below loads these packages for use in the subsequent notebook (the desired functionality for each package is commented next to the package).
 
 ```{julia}
-function minimum(array)
-    min_value = 0
-    for i in 1:length(array)
-        if array[i] < min_value
-            min_value = array[i]
-        end
-    end
-    return min_value
-end
-
-array_values = [89, 90, 95, 100, 100, 78, 99, 98, 100, 95]
-@show minimum(array_values);
+using Random # random number generation and seed-setting
+using DataFrames # tabular data structure
+using CSVFiles # reads/writes .csv files
+using Distributions # interface to work with probability distributions
+using Plots # plotting library
 ```
 
-#### Problem 1.1 (10 points)
+## Problems (Total: 20 Points)
 
-Describe the logic error.
+### Problem 1 (10 points)
 
-#### Problem 1.2 (5 points)
+The underlying question we would like to address is: what is the influence of drinking beer on the likelihood of being bitten by mosquitoes? There is a mechanistic reason why this might occur: mosquitoes are attracted by changes in body temperature and released CO~2~, and it might be that drinking beer induces these changes. We'll analyze this question using (synthetic) data which separates an experimental population into two groups, one which drank beer and the other which drank only water.
 
-Write a fixed version of the function.
+First, we'll load data for the number of bites reported by the participants who drank beer. This is in a comma-delimited file, `data/bites.csv` (which is grossly overkill for this assignment). Each row contains two columns: the group (`beer` and `water`) the person belonged to and the number of times that person was bitten.
 
-#### Problem 1.3 (5 points)
-
-Use your fixed function to find the minimum value of `array_values`.
-
-### Problem 2 (20 points)
-
-Your team is trying to compute the average grade for your class, but the following code produces an error.
+In Julia, we can do this using [`CSVFiles.jl`](https://github.com/queryverse/CSVFiles.jl), which will read in the `.csv` file into a [`DataFrame`](https://dataframes.juliadata.org/stable/), which is a typical data structure for tabular data (and equivalent to a Pandas `DataFrame` in Python or a `dataframe` in R).
 
 ```{julia}
-student_grades = [89, 90, 95, 100, 100, 78, 99, 98, 100, 95]
-function class_average(grades)
-  average_grade = mean(student_grades)
-  return average_grade
-end
+#| output: false
+data = DataFrame(load("data/bites.csv")) # load data into DataFrame
 
-@show average_grade;
+# print data variable (semi-colon suppresses echoed output in Julia, which in this case would duplicate the output)
+@show data; 
 ```
 
-#### Problem 2.1 (10 points)
+How can we tell if there's a meaningful difference between the two groups? Naively, we might just look at the differences in group means.
 
-Describe the logic and/or syntax error.
+::: {.callout-tip}
+## Broadcasting
 
-#### Problem 2.2 (5 points)
+The subsetting operations in the below code use `.==`, which "broadcasts" the element-wise comparison operator == across every element. The decimal in front of `==` indicates that this should be used element-wise (every pair of elements compared for equality, returning a vector of `true` or `false` values); otherwise Julia would try to just check for vector equality (returning a single `true` or `false` value).
 
-Write a fixed version of the code.
-
-#### Problem 2.3 (5 points)
-
-Use your fixed code to compute the average grade for the class.
-
-### Problem 3 (20 points)
-
-Your team has collected data on the mileage of different car models. You want to calculate the average mileage per gallon (MPG) for the different cars, but your code produces the same value for all of the vehicles, which makes you suspicious.
+Broadcasting is a very specific feature of Julia, so this syntax would look different in a different programming language.
+:::
 
 ```{julia}
-function calculate_MPG((miles, gallons))
-    return miles / gallons
-end
+# split data into vectors of bites for each group
+beer = data[data.group .== "beer", :bites]
+water = data[data.group .== "water", :bites]
 
-car_miles =  [(334, 11), (289, 15), (306, 12), (303, 20), (350, 20), (294, 14)]
-
-mpg = zeros(length(car_miles))
-
-for i in 1:length(car_miles)
-    miles = car_miles[1][1]
-    gallon = car_miles[1][2]
-    mpg[i] = calculate_MPG((miles, gallon))
-end
-@show mpg;
+observed_difference = mean(beer) - mean(water)
+@show observed_difference;
 ```
 
-#### Problem 3.1 (10 points)
+This tells us that, on average, the participants in the experiment who drank beer were bitten approximately 4.4 more times than the participants who drank water! Does that seem like a meaningful difference, or could it be the result of random chance? 
 
-Describe the logic error.
+In this problem, we will use a *simulation* approach to address this question, as follows. 
 
-#### Problem 3.2 (5 points)
+* Suppose someone is skeptical of the idea that drinking beer could result in a higher attraction to mosquitoes, and therefore more bites. To this skeptic, the two datasets are really just different samples from the same underlying population of people getting bitten by mosquitoes, rather than two different populations with different propensities for being bitten. This is the skeptic's *hypothesis*, versus our hypothesis that drinking beer changes body temperature and CO~2~ release sufficiently to attract mosquitoes.
+* If the skeptic's hypothesis is true, then we can "shuffle" all of the measurements between the two datasets and re-compute the differences in the means. After repeating this procedure a large number of times, we would obtain a distribution of the differences in means under the assumption that the skeptic's hypothesis is true. 
+* Comparing our experimentally-observed difference to this distribution, we can then evaluate the consistency of the skeptic's hypothesis with the experimental results.
 
-Write a fixed version of the code.
+::: {.callout-important}
+## Why Do We Call This A Simulation-Based Approach?
 
-#### Problem 3.3 (5 points)
+This is a simulation-based approach because the "shuffling" is a non-parametric way of generating new samples from the underlying distribution (more on this later in the semester).
 
-Use your fixed code to compute the MPGs.
+The alternative to this approach is to use a statistical test, such as a [t-test](https://en.wikipedia.org/wiki/Student%27s_t-test), which [may have other assumptions](https://en.wikipedia.org/wiki/Student%27s_t-test#Assumptions) which may not be appropriate for this setting, particularly given the seemingly small sample sizes.
+:::
 
-### Problem 4 (20 points)
+**In this problem**:
 
-You've been handed some code to analyze. The original coder was not very considerate of other potential users: the function is called `mystery_function` and there are no comments explaining the purpose of the code. It appears to take in an array and return some numbers, and you've been assured that the code works as intended.
+* Conduct the above procedure to generate 50,000 simulated datasets under the skeptic's hypothesis. 
+* Plot a histogram of the results and add a dashed vertical line to show the experimental difference (if you are using Julia, feel free to look at the [Making Plots with Julia tutorial](https://viveks.me/simulation-data-analysis/tutorials/julia-plots.html) on the class website). 
+* Draw conclusions about the plausibility of the skeptic's hypothesis that there is no difference? Feel free to use any quantitative or qualitative assessments of your simulations and the observed difference.
 
-```{julia}
-function mystery_function(values)
-    y = []
-    for v in values
-        if !(v in y)
-            append!(y, v)
-        end
-    end
-    return y
-end
+### Problem 2 (10 points)
 
-list_of_values = [1, 2, 3, 4, 3, 4, 2, 1]
-@show mystery_function(list_of_values);
-```
+You are trying to detect if how prevalent cheating was on an exam. You are skeptical of the efficacy of just asking them. However, you are also concerned about privacy --- your goal is not to punish individual students, but to see if there are systemic problems that need to be addressed. Someone proposes the following interview procedure, which the class agrees to participate in:
 
-#### Problem 4.1 (10 points)
+> Each student flips a fair coin, with the results hidden from the interviewer. The student answers honestly if the coin comes up heads. Otherwise, if the coin comes up tails, the student flips the coin again, and answers "I did cheat" if heads, and "I did not cheat", if tails.
 
-Explain the purpose of `mystery_function`.
+We have a hypothesis that cheating was not prevalent, and the proportion of cheaters was no more than 5% of the class; in other words, we expect 5 "true" cheaters out of a class of 100 students. Our TA is more jaded and thinks that cheating was more rampant, and that 30% of the class cheated. The proposed interview procedure is noisy: the interviewer does not know if an admission means that the student cheated, or the result of a heads. However, it gives us a data-generating process that we can model and analyze for consistency with our hypothesis and that of the TA.
 
-#### Problem 4.2 (10 points)
+**In this problem**:
 
-Add comments to the code, explaining why and how it works. Refer to ["Best Practices for Writing Code Comments"](https://stackoverflow.blog/2021/12/23/best-practices-for-writing-code-comments/), and remember that bad comments can be just as bad as no comments at all. You do not need to add comments to every line (in fact, this is very bad practice), but you should note the *purpose* of every "section" of code, and add comments explaining any code sequences that you don't immediately understand.
-
+* Derive and code a simulation model for the above interview procedure given the "true" probability of cheating $p$.
+* Simulate your model (for a class of 100 students) 50,000 times under the your hypothesis and the TA's hypothesis, and plot the two resulting datasets.
+* If you received 31 "Yes, I cheated" responses while interviewing your class, what could you conclude? Feel free to use any qualitative or quantiative assessments to justify your conclusions.
+* How useful do you think the interview procedure is to identify systemic teaching? What changes to the design might you make?
