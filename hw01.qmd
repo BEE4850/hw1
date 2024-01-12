@@ -27,7 +27,7 @@ format:
         warning: true
         error: true
 jupyter: julia-1.9
-format-links: [pdf, ipynb]
+format-links: [pdf]
 freeze: false
 ---
 
@@ -206,87 +206,12 @@ A **Galton board** (named after [Sir Francis Galton](https://en.wikipedia.org/wi
 
 :::
 
-```{julia}
-#| echo: false
-#| output: true
-#| label: fig-galton
-#| fig-cap: "Galton Board simulation. The top shows a schematic of how the Galton board works and the bottom shows a histogram of the landing positions after 200 simulations."
-#| fig-alt: "Galton Board simulation"
-#| fig-align: center
 
-function draw_board(nlevels, width, height)
-    # set geometry of board
-    yoffset = height / (nlevels - 1)
-    xpos = 1
-    ypos = 0
-    # initialize location of galton board pins
-    pins = Array{Tuple{Float64, Float64}}(undef, 0)
-
-    # in each level, create pins
-    for level in nlevels:-1:1
-        for i=1:level
-            push!(pins, (xpos + (i - 1), ypos))
-        end
-        xpos += 1 / 2
-        ypos += yoffset
-    end
-
-    # draw pins
-    p1 = scatter(pins, markershape=:dtriangle, markersize=10, color=:blue, legend=:false, xaxis=:false, yaxis=:false, grid=:false)
-    xlims!(0, nlevels + 1)
-    ylims!((-10, height+17))
-
-    # draw ball path
-    ball_x = (nlevels + 1) / 2
-    ball_y = height
-    for i = 1:(nlevels+1)
-        if i == 1
-            ball_alpha = 1
-        else
-            ball_alpha = 0.6
-        end
-        scatter!((ball_x, ball_y + 11), markershape=:circle, color=:red, markersize=7, alpha = ball_alpha)
-        
-        bounce =  sample([-0.5, 0.5])
-        if i < nlevels
-            ball_x = ball_x + bounce
-            ball_y = ball_y - yoffset
-        else
-            ball_x = ball_x + bounce
-            ball_y = ball_y - yoffset 
-        end
-    end
-
-    return p1
-end
-
-function plot_galton_hist(nballs, nlevels, p=0.5)
-    function simulate_ball(nlevels, p)
-        bin = 0
-        for i = 1:nlevels
-            bin = bin + sample([0, 1], ProbabilityWeights([1-p, p]))
-        end
-        return bin
-    end
-    bins = [simulate_ball(nlevels, p) for i in 1:nballs]
-    p = histogram(bins, bins=0:1:nlevels+1, legend=:false, grid=:false, yaxis=:false, xaxis=:false, ticks=:false)
-    xlims!(0, nlevels + 1)
-    ylims!(0, Inf)
-    vline!(collect(0:1:(nlevels+1)), color=:black, linewidth=2)
-    hline!([0], color=:black, linewidth=2)
-    return p
-end
-
-p1 = draw_board(8, 100, 100)
-p2 = plot_galton_hist(200, 8)
-plot(p1, p2, layout=grid(2, 1, heights=[0.6, 0.4]))
-```
+![Galton Board simulation. The top shows a schematic of how the Galton board works and the bottom shows a histogram of the landing positions after 200 simulations.](figures/galton_board.png){#fig-galton}
 
 ::: {.cell .markdown}
 
 If a ball is dropped into the Galton board, it falls either to the right or the left when it bounces off the top pin. The ball then falls all the way to the bottom of the board, moving slightly to the right or left as it passes through each row of pins. Bins at the bottom of the board capture the ball and record its final position. If this experiment is repeated with many balls, the number of balls in each bin resembles a normal distribution, which is expected due to the Central Limit Theorem.
-
-[![Source: XKCD #2659](https://imgs.xkcd.com/comics/unreliable_connection_2x.png)](https://xkcd.com/2659/){#fig-xkcd fig-align="center"}
 
 Your goal in this exercise is to explore how well a normal distribution fits the outcomes of repeated Galton Board trials as the number increases using quantile-quantile plots. Assessing the appropriateness of a probability model for a data set is a key part of exploratory analysis; we will return to this theme repeatedly. Or, to put it another way, it's time for you to play Plinko!
 
