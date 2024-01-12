@@ -4,10 +4,12 @@ format:
     html:        
         warning: true
         error: true
+        fig-format: svg
     pdf:
         warning: true
         error: true
         keep-tex: true
+        fig-format: svg    
         include-in-header: 
             text: |
                 \usepackage{fvextra}
@@ -38,7 +40,7 @@ freeze: false
 ::: {.callout-important icon=false}
 ### Due Date
 
-Monday, 2/5/24, 9:00pm
+Friday, 2/2/24, 9:00pm
 :::
 
 :::{.callout-tip}
@@ -57,6 +59,14 @@ The goal of this homework assignment is to introduce you to simulation-based dat
 
 * Problem 1 asks you to explore whether a difference between data collected from two groups might be statistically meaningful or the result of noise. This problem repeats the analysis from [Statistics Without The Agonizing Pain](https://www.youtube.com/watch?v=5Dnw46eC-0o) by John Rauser (which is a neat watch!).
 * Problem 2 asks you to evaluate an interview method for finding the level of cheating on a test to determine whether cheating was relatively high or low. This problem was adapted from [Bayesian Methods for Hackers](https://dataorigami.net/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers/).
+* Problem 3 asks you to assess the quality of fit of a normal distribution to realizations from a Galton Board simulation.
+* Problem 4 (**graded only for graduate students**) asks you to simulate outcomes from the *Price Is Right* Showcase game to identify a bidding strategy.
+:::
+
+::: {.cell .markdown}
+
+### Learning Outcomes
+
 
 :::
 
