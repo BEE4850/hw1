@@ -137,7 +137,8 @@ The alternative to this approach is to use a statistical test, such as a [t-test
 
 * Conduct the above procedure to generate 50,000 simulated datasets under the skeptic's hypothesis. 
 * Plot a histogram of the results and add a dashed vertical line to show the experimental difference (if you are using Julia, feel free to look at the [Making Plots with Julia tutorial](https://viveks.me/simulation-data-analysis/tutorials/julia-plots.html) on the class website). 
-* Draw conclusions about the plausibility of the skeptic's hypothesis that there is no difference? Feel free to use any quantitative or qualitative assessments of your simulations and the observed difference.
+* Draw conclusions about the plausibility of the skeptic's hypothesis that there is no difference between groups. Feel free to use any quantitative or qualitative assessments of your simulations and the observed difference.
+* 
 
 ### Problem 2 (10 points)
 
@@ -153,3 +154,49 @@ We have a hypothesis that cheating was not prevalent, and the proportion of chea
 * Simulate your model (for a class of 100 students) 50,000 times under the your hypothesis and the TA's hypothesis, and plot the two resulting datasets.
 * If you received 31 "Yes, I cheated" responses while interviewing your class, what could you conclude? Feel free to use any qualitative or quantiative assessments to justify your conclusions.
 * How useful do you think the interview procedure is to identify systemic teaching? What changes to the design might you make?
+
+### Problem 3 (10 points)
+
+Suppose that we ask a class of students to walk individually from one end of a field to the other and count the number of steps that they take in order to cover the distance. More than likely, each student will get a somewhat different answer. After each student has paced off the field, we then make a histogram of the number of steps taken by the individual students. For a sufficiently large number of students, this histogram would resemble a normal distribution, due to the [Central Limit Theorem](https://en.wikipedia.org/wiki/Central_limit_theorem).
+
+A **Galton board** (named after [Sir Francis Galton](https://en.wikipedia.org/wiki/Francis_Galton), a pioneering statistician and, notably, a eugenicist, which is unfortunately a recurring theme with leading early statisticians...), shown below, is a physical device that demonstrates the Central Limit Theorem. A Galton board has rows of pins arranged in a triangular shape, with each row of pins offset horizontally relative to the rows above and below it. As illustrated in @fig-galton, the top row has one pin, the second row has two pins, and so forth. If you've watched *The Price is Right*, you've seen this as ["Plinko"](https://priceisright.fandom.com/wiki/Plinko).
+
+![Galton Board Simulation](figures/galton_board.png){#fig-galton}
+
+If a ball is dropped into the Galton board, it falls either to the right or the left when it bounces off the top pin. The ball then falls all the way to the bottom of the board, moving slightly to the right or left as it passes through each row of pins. Bins at the bottom of the board capture the ball and record its final position. If this experiment is repeated with many balls, the number of balls in each bin resembles a normal distribution, which is expected due to the Central Limit Theorem.
+
+[![Source: XKCD #2659](https://imgs.xkcd.com/comics/unreliable_connection_2x.png)](https://xkcd.com/2659/){#fig-xkcd fig-align="center"}
+
+Your goal in this exercise is to explore how well a normal distribution fits the outcomes of repeated Galton Board trials as the number increases using quantile-quantile plots. Assessing the appropriateness of a probability model for a data set is a key part of exploratory analysis; we will return to this theme repeatedly. Or, to put it another way, it's time for you to play Plinko!
+
+**In this problem**:
+
+* Write a function `galton_sim` which simulates `n` Galton board trials (assume the board has 8 board rows, as in the image above) and returns a vector with the number of balls which fall into each bin. You can assume (for now) that the board is fair, *e.g.* that the probability of a left or right bounce is 0.5.
+* Run your simulation for a sample of 50 balls. Create a histogram of the results, with each bar corresponding to one bin. Make sure you use a random seed for reproducibility, and label your axes!
+* Each Galton board trial can be represented as a realization from a [binomial distribution](https://en.wikipedia.org/wiki/Binomial_distribution). But as we noted above, by the Central Limit Theorem, the distribution of a  large enough number of trials should be approximately normal. Use a [quantile-quantile (Q-Q) plot](https://en.wikipedia.org/wiki/Q%E2%80%93Q_plot) to compare a fitted normal distribution with your simulation results. How well does a normal distribution fit the data?
+* Repeat your simulation experiment with 200 trials and compare to a normal distribution. Does it describe the empirical distribution better?
+* If the probability of a left bounce is 70%, what does this do to the fit of a normal distribution? What other distribution might you use if not a normal and why?
+
+### Problem 4 (10 points)
+
+<span style="color:red;">GRADED FOR 5850 STUDENTS ONLY</span>
+
+Your mastery of the Central Limit Theorem has led you to win your game of Plinko, and it's time for the [Showcases](https://priceisright.fandom.com/wiki/Showcases). This is the final round of an episode of The Price is Right, matching the two big winners from the episode. Each contestant is shown a "showcase" of prizes, which are usually some combination of a trip, a motor vehicle, some furniture, and maybe some other stuff. They then each have to make a bid on the retail price of the showcase. The rules are:
+
+* an overbid is an automatic loss;
+* the contest who gets closest to the retail price wins their showcase;
+* if a contestant gets within $\$250$ of the retail price and is closer than their opponent, they win both showcases.
+
+Thanks to [exhaustive statistics kept by game show fans](http://tpirstats.com/Season51/Stats.htm), in Season 51 of *The Price is Right* showcase values had the following properties: 
+
+* median: $33,0481;
+* lowest-value: $20,432
+* highest-value: $72,409
+
+
+**In this problem**:
+
+* Write down a model which encodes the Showcase rules as a function of the showcase value and your bid. You can assume that your wagering is independent of your opponent.
+* Select and fit a distribution to the above statistics (you have some freedom to pick a distribution, but make sure you justify it).
+* Using 1,000 samples from your price distribution in your model, plot the expected winnings for bids from $20,000 through $72,000. 
+* Find the bid which maximizes your expected winnings. If you were playing *The Price Is Right*, is this the strategy you would adopt, or are there other considerations you would take into account which were not included in this model?
