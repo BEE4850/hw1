@@ -49,6 +49,8 @@ To do this assignment in Julia, you can find a Jupyter notebook with an appropri
 
 ## Overview
 
+::: {.cell .markdown}
+
 ### Instructions
 
 The goal of this homework assignment is to introduce you to simulation-based data analysis. 
@@ -56,9 +58,14 @@ The goal of this homework assignment is to introduce you to simulation-based dat
 * Problem 1 asks you to explore whether a difference between data collected from two groups might be statistically meaningful or the result of noise. This problem repeats the analysis from [Statistics Without The Agonizing Pain](https://www.youtube.com/watch?v=5Dnw46eC-0o) by John Rauser (which is a neat watch!).
 * Problem 2 asks you to evaluate an interview method for finding the level of cheating on a test to determine whether cheating was relatively high or low. This problem was adapted from [Bayesian Methods for Hackers](https://dataorigami.net/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers/).
 
+:::
+
+::: {.cell .markdown}
 ### Load Environment
 
 The following code loads the environment and makes sure all needed packages are installed. This should be at the start of most Julia scripts.
+
+:::
 
 ```{julia}
 #| output: false
@@ -68,7 +75,10 @@ Pkg.activate(@__DIR__)
 Pkg.instantiate()
 ```
 
+::: {.cell .markdown}
 The following packages are included in the environment (to help you find other similar packages in other languages). The code below loads these packages for use in the subsequent notebook (the desired functionality for each package is commented next to the package).
+
+:::
 
 ```{julia}
 #| output: false
@@ -78,9 +88,13 @@ using DataFrames # tabular data structure
 using CSVFiles # reads/writes .csv files
 using Distributions # interface to work with probability distributions
 using Plots # plotting library
+using StatsBase # statistical quantities like mean, median, etc
+using StatsPlots # some additional statistical plotting tools
 ```
 
 ## Problems (Total: 20 Points)
+
+::: {.cell .markdown}
 
 ### Problem 1 (10 points)
 
@@ -90,6 +104,8 @@ First, we'll load data for the number of bites reported by the participants who 
 
 In Julia, we can do this using [`CSVFiles.jl`](https://github.com/queryverse/CSVFiles.jl), which will read in the `.csv` file into a [`DataFrame`](https://dataframes.juliadata.org/stable/), which is a typical data structure for tabular data (and equivalent to a Pandas `DataFrame` in Python or a `dataframe` in R).
 
+:::
+
 ```{julia}
 #| output: false
 data = DataFrame(load("data/bites.csv")) # load data into DataFrame
@@ -98,7 +114,10 @@ data = DataFrame(load("data/bites.csv")) # load data into DataFrame
 @show data; 
 ```
 
+::: {.cell .markdown}
+
 How can we tell if there's a meaningful difference between the two groups? Naively, we might just look at the differences in group means.
+:::
 
 ::: {.callout-tip}
 ## Broadcasting
@@ -117,13 +136,17 @@ observed_difference = mean(beer) - mean(water)
 @show observed_difference;
 ```
 
+::: {.cell .markdown}
+
 This tells us that, on average, the participants in the experiment who drank beer were bitten approximately 4.4 more times than the participants who drank water! Does that seem like a meaningful difference, or could it be the result of random chance? 
 
-In this problem, we will use a *simulation* approach to address this question, as follows. 
+We will use a *simulation* approach to address this question, as follows. 
 
 * Suppose someone is skeptical of the idea that drinking beer could result in a higher attraction to mosquitoes, and therefore more bites. To this skeptic, the two datasets are really just different samples from the same underlying population of people getting bitten by mosquitoes, rather than two different populations with different propensities for being bitten. This is the skeptic's *hypothesis*, versus our hypothesis that drinking beer changes body temperature and CO~2~ release sufficiently to attract mosquitoes.
 * If the skeptic's hypothesis is true, then we can "shuffle" all of the measurements between the two datasets and re-compute the differences in the means. After repeating this procedure a large number of times, we would obtain a distribution of the differences in means under the assumption that the skeptic's hypothesis is true. 
 * Comparing our experimentally-observed difference to this distribution, we can then evaluate the consistency of the skeptic's hypothesis with the experimental results.
+
+:::
 
 ::: {.callout-important}
 ## Why Do We Call This A Simulation-Based Approach?
@@ -133,12 +156,18 @@ This is a simulation-based approach because the "shuffling" is a non-parametric 
 The alternative to this approach is to use a statistical test, such as a [t-test](https://en.wikipedia.org/wiki/Student%27s_t-test), which [may have other assumptions](https://en.wikipedia.org/wiki/Student%27s_t-test#Assumptions) which may not be appropriate for this setting, particularly given the seemingly small sample sizes.
 :::
 
+::: {.cell .markdown}
+
 **In this problem**:
 
 * Conduct the above procedure to generate 50,000 simulated datasets under the skeptic's hypothesis. 
 * Plot a histogram of the results and add a dashed vertical line to show the experimental difference (if you are using Julia, feel free to look at the [Making Plots with Julia tutorial](https://viveks.me/simulation-data-analysis/tutorials/julia-plots.html) on the class website). 
 * Draw conclusions about the plausibility of the skeptic's hypothesis that there is no difference between groups. Feel free to use any quantitative or qualitative assessments of your simulations and the observed difference.
-* 
+
+:::
+
+::: {.cell .markdown}
+
 
 ### Problem 2 (10 points)
 
@@ -155,13 +184,95 @@ We have a hypothesis that cheating was not prevalent, and the proportion of chea
 * If you received 31 "Yes, I cheated" responses while interviewing your class, what could you conclude? Feel free to use any qualitative or quantiative assessments to justify your conclusions.
 * How useful do you think the interview procedure is to identify systemic teaching? What changes to the design might you make?
 
+:::
+
+::: {.cell .markdown}
+
 ### Problem 3 (10 points)
 
 Suppose that we ask a class of students to walk individually from one end of a field to the other and count the number of steps that they take in order to cover the distance. More than likely, each student will get a somewhat different answer. After each student has paced off the field, we then make a histogram of the number of steps taken by the individual students. For a sufficiently large number of students, this histogram would resemble a normal distribution, due to the [Central Limit Theorem](https://en.wikipedia.org/wiki/Central_limit_theorem).
 
 A **Galton board** (named after [Sir Francis Galton](https://en.wikipedia.org/wiki/Francis_Galton), a pioneering statistician and, notably, a eugenicist, which is unfortunately a recurring theme with leading early statisticians...), shown below, is a physical device that demonstrates the Central Limit Theorem. A Galton board has rows of pins arranged in a triangular shape, with each row of pins offset horizontally relative to the rows above and below it. As illustrated in @fig-galton, the top row has one pin, the second row has two pins, and so forth. If you've watched *The Price is Right*, you've seen this as ["Plinko"](https://priceisright.fandom.com/wiki/Plinko).
 
-![Galton Board Simulation](figures/galton_board.png){#fig-galton}
+:::
+
+```{julia}
+#| echo: false
+#| output: true
+#| label: fig-galton
+#| fig-cap: "Galton Board simulation. The top shows a schematic of how the Galton board works and the bottom shows a histogram of the landing positions after 200 simulations."
+#| fig-alt: "Galton Board simulation"
+#| fig-align: center
+
+function draw_board(nlevels, width, height)
+    # set geometry of board
+    yoffset = height / (nlevels - 1)
+    xpos = 1
+    ypos = 0
+    # initialize location of galton board pins
+    pins = Array{Tuple{Float64, Float64}}(undef, 0)
+
+    # in each level, create pins
+    for level in nlevels:-1:1
+        for i=1:level
+            push!(pins, (xpos + (i - 1), ypos))
+        end
+        xpos += 1 / 2
+        ypos += yoffset
+    end
+
+    # draw pins
+    p1 = scatter(pins, markershape=:dtriangle, markersize=10, color=:blue, legend=:false, xaxis=:false, yaxis=:false, grid=:false)
+    xlims!(0, nlevels + 1)
+    ylims!((-10, height+17))
+
+    # draw ball path
+    ball_x = (nlevels + 1) / 2
+    ball_y = height
+    for i = 1:(nlevels+1)
+        if i == 1
+            ball_alpha = 1
+        else
+            ball_alpha = 0.6
+        end
+        scatter!((ball_x, ball_y + 11), markershape=:circle, color=:red, markersize=7, alpha = ball_alpha)
+        
+        bounce =  sample([-0.5, 0.5])
+        if i < nlevels
+            ball_x = ball_x + bounce
+            ball_y = ball_y - yoffset
+        else
+            ball_x = ball_x + bounce
+            ball_y = ball_y - yoffset 
+        end
+    end
+
+    return p1
+end
+
+function plot_galton_hist(nballs, nlevels, p=0.5)
+    function simulate_ball(nlevels, p)
+        bin = 0
+        for i = 1:nlevels
+            bin = bin + sample([0, 1], ProbabilityWeights([1-p, p]))
+        end
+        return bin
+    end
+    bins = [simulate_ball(nlevels, p) for i in 1:nballs]
+    p = histogram(bins, bins=0:1:nlevels+1, legend=:false, grid=:false, yaxis=:false, xaxis=:false, ticks=:false)
+    xlims!(0, nlevels + 1)
+    ylims!(0, Inf)
+    vline!(collect(0:1:(nlevels+1)), color=:black, linewidth=2)
+    hline!([0], color=:black, linewidth=2)
+    return p
+end
+
+p1 = draw_board(8, 100, 100)
+p2 = plot_galton_hist(200, 8)
+plot(p1, p2, layout=grid(2, 1, heights=[0.6, 0.4]))
+```
+
+::: {.cell .markdown}
 
 If a ball is dropped into the Galton board, it falls either to the right or the left when it bounces off the top pin. The ball then falls all the way to the bottom of the board, moving slightly to the right or left as it passes through each row of pins. Bins at the bottom of the board capture the ball and record its final position. If this experiment is repeated with many balls, the number of balls in each bin resembles a normal distribution, which is expected due to the Central Limit Theorem.
 
@@ -171,11 +282,15 @@ Your goal in this exercise is to explore how well a normal distribution fits the
 
 **In this problem**:
 
-* Write a function `galton_sim` which simulates `n` Galton board trials (assume the board has 8 board rows, as in the image above) and returns a vector with the number of balls which fall into each bin. You can assume (for now) that the board is fair, *e.g.* that the probability of a left or right bounce is 0.5.
+* Write a function `galton_sim` which simulates `n` Galton board trials (assume the board has 8 board rows, as in the image above) and returns a vector with the number of balls which fall into each bin. You can assume (for now) that the board is fair, *e.g.* that the probability of a left or right bounce is 0.5; you may want to make this probability a function parameter so you can change it later.
 * Run your simulation for a sample of 50 balls. Create a histogram of the results, with each bar corresponding to one bin. Make sure you use a random seed for reproducibility, and label your axes!
 * Each Galton board trial can be represented as a realization from a [binomial distribution](https://en.wikipedia.org/wiki/Binomial_distribution). But as we noted above, by the Central Limit Theorem, the distribution of a  large enough number of trials should be approximately normal. Use a [quantile-quantile (Q-Q) plot](https://en.wikipedia.org/wiki/Q%E2%80%93Q_plot) to compare a fitted normal distribution with your simulation results. How well does a normal distribution fit the data?
-* Repeat your simulation experiment with 200 trials and compare to a normal distribution. Does it describe the empirical distribution better?
+* Repeat your simulation experiment with 250 trials and compare to a normal distribution. Does it describe the empirical distribution better?
 * If the probability of a left bounce is 70%, what does this do to the fit of a normal distribution? What other distribution might you use if not a normal and why?
+
+:::
+
+::: {.cell .markdown}
 
 ### Problem 4 (10 points)
 
@@ -200,3 +315,5 @@ Thanks to [exhaustive statistics kept by game show fans](http://tpirstats.com/Se
 * Select and fit a distribution to the above statistics (you have some freedom to pick a distribution, but make sure you justify it).
 * Using 1,000 samples from your price distribution in your model, plot the expected winnings for bids from $20,000 through $72,000. 
 * Find the bid which maximizes your expected winnings. If you were playing *The Price Is Right*, is this the strategy you would adopt, or are there other considerations you would take into account which were not included in this model?
+
+:::
