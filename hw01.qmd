@@ -1,5 +1,6 @@
 ---
 title: "Homework 1: Simulation-Based Data Analysis"
+subtitle: "BEE 4850/5850, Fall 2024"
 format:
     html:        
         warning: true
@@ -43,11 +44,12 @@ freeze: false
 Friday, 2/2/24, 9:00pm
 :::
 
+::: {.content-visible unless-format="ipynb"}
 :::{.callout-tip}
 
 To do this assignment in Julia, you can find a Jupyter notebook with an appropriate environment in [the homework's Github repository]({{< var github_org.repo >}}/hw01). Otherwise, you will be responsible for setting up an appropriate package environment in the language of your choosing. Make sure to include your name and NetID on your solution.
 :::
-
+:::
 
 ## Overview
 
@@ -181,7 +183,7 @@ The alternative to this approach is to use a statistical test, such as a [t-test
 
 ### Problem 2 (10 points)
 
-You are trying to detect if how prevalent cheating was on an exam. You are skeptical of the efficacy of just asking them. However, you are also concerned about privacy --- your goal is not to punish individual students, but to see if there are systemic problems that need to be addressed. Someone proposes the following interview procedure, which the class agrees to participate in:
+You are trying to detect if how prevalent cheating was on an exam. You are skeptical of the efficacy of just asking the students if they cheated. You are also concerned about privacy --- your goal is not to punish individual students, but to see if there are systemic problems that need to be addressed. Someone proposes the following interview procedure, which the class agrees to participate in:
 
 > Each student flips a fair coin, with the results hidden from the interviewer. The student answers honestly if the coin comes up heads. Otherwise, if the coin comes up tails, the student flips the coin again, and answers "I did cheat" if heads, and "I did not cheat", if tails.
 
@@ -202,7 +204,7 @@ We have a hypothesis that cheating was not prevalent, and the proportion of chea
 
 Suppose that we ask a class of students to walk individually from one end of a field to the other and count the number of steps that they take in order to cover the distance. More than likely, each student will get a somewhat different answer. After each student has paced off the field, we then make a histogram of the number of steps taken by the individual students. For a sufficiently large number of students, this histogram would resemble a normal distribution, due to the [Central Limit Theorem](https://en.wikipedia.org/wiki/Central_limit_theorem).
 
-A **Galton board** (named after [Sir Francis Galton](https://en.wikipedia.org/wiki/Francis_Galton), a pioneering statistician and, notably, a eugenicist, which is unfortunately a recurring theme with leading early statisticians...), shown below, is a physical device that demonstrates the Central Limit Theorem. A Galton board has rows of pins arranged in a triangular shape, with each row of pins offset horizontally relative to the rows above and below it. As illustrated in @fig-galton, the top row has one pin, the second row has two pins, and so forth. If you've watched *The Price is Right*, you've seen this as ["Plinko"](https://priceisright.fandom.com/wiki/Plinko).
+A **Galton board** (named after [Sir Francis Galton](https://en.wikipedia.org/wiki/Francis_Galton), a pioneering statistician^[And, notably, a leading eugenicist, which is unfortunately a recurring theme with leading early statisticians...)], shown below, is a physical device that demonstrates the Central Limit Theorem. A Galton board has rows of pins arranged in a triangular shape, with each row of pins offset horizontally relative to the rows above and below it. As illustrated in @fig-galton, the top row has one pin, the second row has two pins, and so forth. If you've watched *The Price is Right*, you've seen this as ["Plinko"](https://priceisright.fandom.com/wiki/Plinko).
 
 :::
 
