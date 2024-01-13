@@ -47,7 +47,9 @@ Friday, 2/2/24, 9:00pm
 ::: {.content-visible unless-format="ipynb"}
 :::{.callout-tip}
 
-To do this assignment in Julia, you can find a Jupyter notebook with an appropriate environment in [the homework's Github repository]({{< var github_org.repo >}}/hw01). Otherwise, you will be responsible for setting up an appropriate package environment in the language of your choosing. Make sure to include your name and NetID on your solution.
+You can find a Jupyter notebook, data, and a Julia 1.9.x environment in [the homework's Github repository]({{< var github_org.repo >}}/hw01). You should feel free to clone the repository and switch the notebook to another language, or to download the relevant data file(s) and solve the problems without using a notebook. In either of these cases, if you using a different environment, you will be responsible for setting up an appropriate package environment.
+
+Regardless of your solution method, make sure to include your name and NetID on your solution PDF for submission to Gradescope.
 :::
 :::
 
