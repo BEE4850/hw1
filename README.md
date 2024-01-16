@@ -20,7 +20,7 @@ The repository consists of the following files:
 
 - `hw01.ipynb`: Jupyter Notebook for the homework assignment. Students should create code or Markdown blocks as necessary to answer questions, or can write their code and solutions in a different file format. 
 - `Project.toml`, `Manifest.toml`: Julia environment files. These should just work, but feel free to add other packages as needed using the `Pkg` package manager. 
-- `hw1.qmd`: Source file for Jupyter notebook generation. You shouldn't need to or want to touch this; everything is in the `.ipynb` file. You could modify this file to write your solution if you want to use [Quarto](https://quarto.org/).
+- `hw1.qmd`: Source file for Jupyter notebook generation. You could modify this file to write your solution if you want to use [Quarto](https://quarto.org/).
 - `LICENSE`: This material is licensed using the MIT license. You can ignore this for working on the problem set.
 - `README.md`: This file. You shouldn't need to touch this.
 - `.gitignore`: This tells `git` what files to ignore. You shouldn't need to touch this.
