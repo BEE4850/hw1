@@ -99,11 +99,13 @@ using StatsBase # statistical quantities like mean, median, etc
 using StatsPlots # some additional statistical plotting tools
 ```
 
-## Problems (Total: 20 Points)
+## Problems
+
+Each problem in this assignment is worth 10 points.
 
 ::: {.cell .markdown}
 
-### Problem 1 (10 points)
+### Problem 1
 
 The underlying question we would like to address is: what is the influence of drinking beer on the likelihood of being bitten by mosquitoes? There is a mechanistic reason why this might occur: mosquitoes are attracted by changes in body temperature and released CO~2~, and it might be that drinking beer induces these changes. We'll analyze this question using (synthetic) data which separates an experimental population into two groups, one which drank beer and the other which drank only water.
 
@@ -176,7 +178,7 @@ The alternative to this approach is to use a statistical test, such as a [t-test
 ::: {.cell .markdown}
 
 
-### Problem 2 (10 points)
+### Problem 2
 
 You are trying to detect if how prevalent cheating was on an exam. You are skeptical of the efficacy of just asking the students if they cheated. You are also concerned about privacy --- your goal is not to punish individual students, but to see if there are systemic problems that need to be addressed. Someone proposes the following interview procedure, which the class agrees to participate in:
 
@@ -224,7 +226,7 @@ Your goal in this exercise is to explore how well a normal distribution fits the
 
 ::: {.cell .markdown}
 
-### Problem 4 (10 points)
+### Problem 4
 
 <span style="color:red;">GRADED FOR 5850 STUDENTS ONLY</span>
 
