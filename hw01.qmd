@@ -68,13 +68,6 @@ The goal of this homework assignment is to introduce you to simulation-based dat
 :::
 
 ::: {.cell .markdown}
-
-### Learning Outcomes
-
-
-:::
-
-::: {.cell .markdown}
 ### Load Environment
 
 The following code loads the environment and makes sure all needed packages are installed. This should be at the start of most Julia scripts.
