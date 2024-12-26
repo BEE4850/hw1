@@ -1,18 +1,16 @@
-# Homework 1: Simulation-Based Data Analysis
-
+# Homework 1
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-This is the repository for Homework 1 for [BEE 4850](https://viveks.me/simulation-data-analysis), taught at [Cornell University](https://cornell.edu) in Spring 2024 by [Vivek Srikrishnan](https://viveks.me).
-
-If enrolled in the class, a PDF of the completed assignment, **with all cells evaluated if a notebook**, should be submitted to Gradescope *no later* than Friday, February 2, 2024, at 9:00pm. 50% will be deducted if the notebook is submitted up to 24 hours late.
+This is the repository for Homework 1 for [BEE 4850](https://viveks.me/simulation-data-analysis).
 
 ## Learning Objectives
 
 After completing this lab, students will be able to:
 
-- reason about the consistency of data with hypotheses about data generating processes;
-- evaluate the match (or mismatch) between a normal distribution and data;
-- (extra problem) find a strategy which maximizes performance across a range of simulated outcomes.
+- identify spurious correlations;
+- simulate from data-generating models corresponding to hypotheses about data;
+- reason about the consistency of data with hypotheses about data generating processes.
+
 
 ## Repository Overview
 
@@ -20,7 +18,7 @@ The repository consists of the following files:
 
 - `hw01.ipynb`: Jupyter Notebook for the homework assignment. Students should create code or Markdown blocks as necessary to answer questions, or can write their code and solutions in a different file format. 
 - `Project.toml`, `Manifest.toml`: Julia environment files. These should just work, but feel free to add other packages as needed using the `Pkg` package manager. 
-- `hw1.qmd`: Source file for Jupyter notebook generation. You could modify this file to write your solution if you want to use [Quarto](https://quarto.org/).
+- `hw01.qmd`: Source file for Jupyter notebook generation. You could modify this file to write your solution if you want to use [Quarto](https://quarto.org/).
 - `LICENSE`: This material is licensed using the MIT license. You can ignore this for working on the problem set.
 - `README.md`: This file. You shouldn't need to touch this.
 - `.gitignore`: This tells `git` what files to ignore. You shouldn't need to touch this.
@@ -29,7 +27,7 @@ The repository consists of the following files:
 
 These are the prerequisites for using the Julia package environment and the notebook. If using a different language (in a modified version of the notebook or elsewhere), the steps will be different.
 
-1. [Install Julia](https://julialang.org/downloads/) before beginning this lab. This notebook was developed with version 1.9.4, but any 1.9.x should work (there could be some issues with other versions, depending on what's changed).
+1. [Install Julia](https://julialang.org/downloads/) before beginning this lab. This notebook was developed with version 1.10.4, but any 1.10.x should work (there could be some issues with other versions, depending on what's changed).
 2. If necessary, [install git](https://happygitwithr.com/install-git.html) and [create a GitHub account](https://github.com). 
 3. [Clone the repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository). I recommend doing this in a dedicated `BEE4850/` folder, which can also house homework assignment repositories and lecture notes. You can clone directly into the `BEE4850/` folder.   For Windows (or from another graphical interface), just create a `BEE4850` folder, then a `hw` folder inside of that, then clone into that folder. Or to clone into a `BEE4850/hw` folder, from a command prompt:
     ```bash
@@ -48,7 +46,7 @@ These are the prerequisites for using the Julia package environment and the note
   - If you installed VS Code, you should be able to just open `hw01.ipynb` and everything should just work. 
   - If you're using a different IDE, Google how to make sure that it is set up to run a Julia notebook.
   - If you want to use `IJulia.jl`, open a Julia prompt. You can do this by:
-    - Using the `Julia-1.9` or equivalent graphical program, type `cd("BEE4850/hw")` or whatever path points to your lab notebook folder;
+    - Using the `Julia-1.10` or equivalent graphical program, type `cd("BEE4850/hw")` or whatever path points to your lab notebook folder;
     - Navigating to your `BEE4850/hw/hw01` folder and typing `julia` to open the prompt.Then:
     
       ```julia
