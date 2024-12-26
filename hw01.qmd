@@ -245,7 +245,7 @@ Adjusting for inflation, there has been an increase in tropical cyclone damages 
 
 :::
 
-![Change in tropical cyclone damages in U.S. Atlantic coastal counties from 1900--2022, aggregated by pentad and normalized to 2018 U.S. dollars. The red line shows an exponential trend of 1.06\%/yr growth in damages. Reproduced from [Willoughby, Hernandez, & Pinnock (2024)](https://doi.org/10.1175/JAMC-D-24-0047.1).](figures/normalized-TC-damages.jpg){#fig-tc fig-align="center"}
+![Change in tropical cyclone damages in U.S. Atlantic coastal counties from 1900--2022, aggregated by pentad and normalized to 2018 U.S. dollars. The red line shows an exponential trend of 1.06\%/yr growth in damages. Reproduced from [Willoughby, Hernandez, & Pinnock (2024)](https://doi.org/10.1175/JAMC-D-24-0047.1).](figures/normalized-TC-damages.jpg){#fig-tc fig-align="center" width=5in}
 
 ::: {.cell .markdown}
 **In this problem**:
